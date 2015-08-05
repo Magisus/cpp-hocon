@@ -6,7 +6,7 @@ namespace hocon {
 
     /** Value token */
     value::value(unique_ptr<abstract_config_value> value) :
-            token(token_type::VALUE), _value(move(value)) { }
+            token(token_type::VALUE, nullptr, value->transform_to_string()), _value(move(value)) { }
 
     value::value(unique_ptr<abstract_config_value> value, string original_text) :
             token(token_type::VALUE, nullptr, original_text),
@@ -25,7 +25,6 @@ namespace hocon {
                other.to_string() == to_string();
     }
 
-
     /** Line token */
     line::line(shared_ptr<simple_config_origin> origin) :
             token(token_type::NEWLINE, move(origin), "\n") { }
@@ -43,7 +42,7 @@ namespace hocon {
             token(token_type::UNQUOTED_TEXT, move(origin), move(text)) { }
 
     string unquoted_text::to_string() const {
-        return "'" + token_text() + "'";
+        return "'" + token_text() + "' (UNQUOTED)";
     }
 
     bool unquoted_text::operator==(const token& other) const {
