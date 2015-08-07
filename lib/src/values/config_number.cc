@@ -1,4 +1,9 @@
 #include <internal/values/config_number.hpp>
+#include <internal/values/config_int.hpp>
+#include <internal/values/config_long.hpp>
+#include <internal/values/config_double.hpp>
+#include <internal/config_exception.hpp>
+#include <limits>
 
 using namespace std;
 
@@ -32,4 +37,32 @@ namespace hocon {
     bool config_number::operator!=(const config_number &other) const {
         return !(*this == other);
     }
+
+    int config_number::int_value_range_checked(std::string path) {
+        long l = long_value();
+        if (l < numeric_limits<int>::min() || l > numeric_limits<int>::max()) {
+            throw config_exception("Tried to get int from out of range value " + to_string(l));
+        }
+        return static_cast<int>(l);
+    }
+
+    unique_ptr<config_number> config_number::new_number(
+            shared_ptr<simple_config_origin> origin, long value, std::string original_text) {
+        if (value >= numeric_limits<int>::min() && value <= numeric_limits<int>::max()) {
+            return unique_ptr<config_int>(new config_int(origin, static_cast<int>(value), original_text));
+        } else {
+            return unique_ptr<config_long>(new config_long(origin, value, original_text));
+        }
+    }
+
+    unique_ptr<config_number> config_number::new_number(
+            shared_ptr<simple_config_origin> origin, double value, std::string original_text) {
+        long as_long = static_cast<long>(value);
+        if (as_long == value) {
+            return new_number(origin, as_long, original_text);
+        } else {
+            return unique_ptr<config_double>(new config_double(origin, value, original_text));
+        }
+    }
+
 }  // namespace hocon

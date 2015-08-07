@@ -22,6 +22,14 @@ namespace hocon {
         bool operator==(const config_number &other) const;
         bool operator!=(const config_number &other) const;
 
+        int int_value_range_checked(std::string path);
+
+        static std::unique_ptr<config_number> new_number(
+                std::shared_ptr<simple_config_origin> origin, long value, std::string original_text);
+
+        static std::unique_ptr<config_number> new_number(
+                std::shared_ptr<simple_config_origin> origin, double value, std::string original_text);
+
     private:
         std::string _original_text;
     };

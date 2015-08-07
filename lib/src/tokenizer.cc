@@ -250,11 +250,11 @@ namespace hocon {
 
         try {
             if (contained_decimal_or_E) {
-                return make_shared<value>(unique_ptr<config_double>(
-                        new config_double(_line_origin, boost::lexical_cast<double>(result), result)));
+                return make_shared<value>(config_number::new_number(
+                        _line_origin, boost::lexical_cast<double>(result), result));
             } else {
-                return make_shared<value>(unique_ptr<config_long>(
-                        new config_long(_line_origin, boost::lexical_cast<long>(result), result)));
+                return make_shared<value>(config_number::new_number(
+                        _line_origin, boost::lexical_cast<long>(result), result));
             }
         } catch (boost::bad_lexical_cast const& ex) {
             // not a number after all, see if it's an unquoted string

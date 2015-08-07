@@ -6,6 +6,7 @@
 #include <internal/values/config_boolean.hpp>
 #include <internal/values/config_double.hpp>
 #include <internal/values/config_long.hpp>
+#include <internal/values/config_int.hpp>
 #include <internal/values/config_null.hpp>
 
 #include <string>

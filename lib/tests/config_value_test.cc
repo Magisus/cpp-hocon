@@ -1,11 +1,9 @@
 #include <catch.hpp>
 
 #include "test_utils.hpp"
-#include <internal/simple_config_origin.hpp>
-#include <internal/values/config_long.hpp>
-#include <internal/values/config_double.hpp>
 
 using namespace hocon;
+using namespace std;
 
 TEST_CASE("simple_config_origin equality", "[config_values]") {
     auto org1 = simple_config_origin("foo");
@@ -45,5 +43,41 @@ TEST_CASE("config_number equality", "[config_values]") {
 
         REQUIRE(an_int == a_double);
         REQUIRE_FALSE(an_int == another_double);
+    }
+}
+
+TEST_CASE("config numbers ints vs longs vs doubles", "[tokenizer]") {
+    SECTION("creates a config_int from an int") {
+        unique_ptr<config_number> num = config_number::new_number(fake_origin(), 2L, "2");
+        REQUIRE(dynamic_cast<config_int*>(num.get()));
+        REQUIRE_FALSE(dynamic_cast<config_long*>(num.get()));
+    }
+
+    SECTION("creates config_long from a large long") {
+        long definitely_a_long = numeric_limits<int>::max() + 1L;
+        unique_ptr<config_number> num = config_number::new_number(fake_origin(),
+            definitely_a_long, to_string(definitely_a_long));
+        REQUIRE(dynamic_cast<config_long*>(num.get()));
+        REQUIRE_FALSE(dynamic_cast<config_int*>(num.get()));
+    }
+
+    SECTION("creates config_int from small whole-number double") {
+        unique_ptr<config_number> num = config_number::new_number(fake_origin(), 2.0, "2.0");
+        REQUIRE(dynamic_cast<config_int*>(num.get()));
+        REQUIRE_FALSE(dynamic_cast<config_double*>(num.get()));
+    }
+
+    SECTION("creates config_long from large whole-number double") {
+        double big_double = numeric_limits<int>::max() + 1.0;
+        unique_ptr<config_number> num = config_number::new_number(
+                fake_origin(), big_double, to_string(big_double));
+        REQUIRE(dynamic_cast<config_long*>(num.get()));
+        REQUIRE_FALSE(dynamic_cast<config_double*>(num.get()));
+    }
+
+    SECTION("creates config_double for non-whole number") {
+        unique_ptr<config_number> num = config_number::new_number(fake_origin(), 2.5, "2.5");
+        REQUIRE(dynamic_cast<config_double*>(num.get()));
+        REQUIRE_FALSE(dynamic_cast<config_int*>(num.get()));
     }
 }
