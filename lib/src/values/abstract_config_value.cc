@@ -13,7 +13,7 @@ namespace hocon {
         return "";
     }
 
-    shared_ptr<simple_config_origin> abstract_config_value::origin() const {
+    shared_ptr<simple_config_origin> const& abstract_config_value::origin() const {
         return _origin;
     }
 
