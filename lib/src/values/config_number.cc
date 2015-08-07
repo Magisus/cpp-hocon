@@ -3,7 +3,7 @@
 #include <internal/values/config_long.hpp>
 #include <internal/values/config_double.hpp>
 #include <internal/config_exception.hpp>
-#include <limits>
+#include <climits>
 
 using namespace std;
 
@@ -47,7 +47,7 @@ namespace hocon {
     }
 
     unique_ptr<config_number> config_number::new_number(
-            shared_ptr<simple_config_origin> origin, long value, std::string original_text) {
+            shared_ptr<simple_config_origin> origin, int64_t value, std::string original_text) {
         if (value >= numeric_limits<int>::min() && value <= numeric_limits<int>::max()) {
             return unique_ptr<config_int>(new config_int(origin, static_cast<int>(value), original_text));
         } else {
@@ -57,7 +57,7 @@ namespace hocon {
 
     unique_ptr<config_number> config_number::new_number(
             shared_ptr<simple_config_origin> origin, double value, std::string original_text) {
-        long as_long = static_cast<long>(value);
+        int64_t as_long = static_cast<int64_t>(value);
         if (as_long == value) {
             return new_number(origin, as_long, original_text);
         } else {

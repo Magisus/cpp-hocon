@@ -16,7 +16,7 @@ namespace hocon {
         }
     }
 
-    long config_int::long_value() const {
+    int64_t config_int::long_value() const {
         return _value;
     }
 

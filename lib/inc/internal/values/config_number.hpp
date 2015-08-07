@@ -15,7 +15,7 @@ namespace hocon {
         std::string transform_to_string() const;
         config_value_type value_type() const;
 
-        virtual long long_value() const = 0;
+        virtual int64_t long_value() const = 0;
         virtual double double_value() const = 0;
         bool is_whole() const;
 
@@ -25,7 +25,7 @@ namespace hocon {
         int int_value_range_checked(std::string path);
 
         static std::unique_ptr<config_number> new_number(
-                std::shared_ptr<simple_config_origin> origin, long value, std::string original_text);
+                std::shared_ptr<simple_config_origin> origin, int64_t value, std::string original_text);
 
         static std::unique_ptr<config_number> new_number(
                 std::shared_ptr<simple_config_origin> origin, double value, std::string original_text);

@@ -48,13 +48,13 @@ TEST_CASE("config_number equality", "[config_values]") {
 
 TEST_CASE("config numbers ints vs longs vs doubles", "[tokenizer]") {
     SECTION("creates a config_int from an int") {
-        unique_ptr<config_number> num = config_number::new_number(fake_origin(), 2L, "2");
+        unique_ptr<config_number> num = config_number::new_number(fake_origin(), int64_t(2), "2");
         REQUIRE(dynamic_cast<config_int*>(num.get()));
         REQUIRE_FALSE(dynamic_cast<config_long*>(num.get()));
     }
 
     SECTION("creates config_long from a large long") {
-        long definitely_a_long = numeric_limits<int>::max() + 1L;
+        int64_t definitely_a_long = numeric_limits<int64_t>::max();
         unique_ptr<config_number> num = config_number::new_number(fake_origin(),
             definitely_a_long, to_string(definitely_a_long));
         REQUIRE(dynamic_cast<config_long*>(num.get()));

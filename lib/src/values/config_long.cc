@@ -4,7 +4,7 @@ using namespace std;
 
 namespace hocon {
 
-    config_long::config_long(shared_ptr<simple_config_origin> origin, long value, string original_text) :
+    config_long::config_long(shared_ptr<simple_config_origin> origin, int64_t value, string original_text) :
             config_number(origin, move(original_text)), _value(value) { }
 
     std::string config_long::transform_to_string() const {
@@ -16,7 +16,7 @@ namespace hocon {
         }
     }
 
-    long config_long::long_value() const {
+    int64_t config_long::long_value() const {
         return _value;
     }
 

@@ -17,8 +17,8 @@ namespace hocon {
         }
     }
 
-    long config_double::long_value() const {
-        return (long)_value;
+    int64_t config_double::long_value() const {
+        return static_cast<int64_t>(_value);
     }
 
     double config_double::double_value() const {

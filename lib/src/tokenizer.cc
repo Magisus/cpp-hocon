@@ -254,7 +254,7 @@ namespace hocon {
                         _line_origin, boost::lexical_cast<double>(result), result));
             } else {
                 return make_shared<value>(config_number::new_number(
-                        _line_origin, boost::lexical_cast<long>(result), result));
+                        _line_origin, boost::lexical_cast<int64_t>(result), result));
             }
         } catch (boost::bad_lexical_cast const& ex) {
             // not a number after all, see if it's an unquoted string
