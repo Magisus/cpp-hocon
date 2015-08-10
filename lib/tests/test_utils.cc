@@ -53,4 +53,17 @@ namespace hocon {
         return make_shared<hash_comment>(fake_origin(), text);
     }
 
+    /** Nodes */
+    shared_ptr<config_node_simple_value> colon_node() {
+        return make_shared<config_node_simple_value>(tokens::colon_token());
+    }
+
+    shared_ptr<config_node_simple_value> open_brace_node() {
+        return make_shared<config_node_simple_value>(tokens::open_curly_token());
+    }
+
+    shared_ptr<config_node_simple_value> close_brace_node() {
+        return make_shared<config_node_simple_value>(tokens::close_curly_token());
+    }
+
 }  // namespace hocon

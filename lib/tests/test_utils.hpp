@@ -11,11 +11,12 @@
 
 #include <string>
 #include <memory>
+#include <internal/nodes/config_node_simple_value.hpp>
 
 namespace hocon {
 
     std::shared_ptr<simple_config_origin> fake_origin(std::string description = "fake", int line_number = 0);
-
+    
     std::shared_ptr<value> string_token(std::string text,
                                         config_string_type type = config_string_type::QUOTED);
 
@@ -38,5 +39,12 @@ namespace hocon {
     std::shared_ptr<double_slash_comment> double_slash_comment_token(std::string text);
 
     std::shared_ptr<hash_comment> hash_comment_token(std::string text);
+
+    /** Nodes */
+    std::shared_ptr<config_node_simple_value> colon_node();
+
+    std::shared_ptr<config_node_simple_value> open_brace_node();
+
+    std::shared_ptr<config_node_simple_value> close_brace_node();
 
 }  // namespace hocon
