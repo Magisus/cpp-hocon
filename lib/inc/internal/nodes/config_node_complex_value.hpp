@@ -8,7 +8,7 @@ namespace hocon {
     public:
         config_node_complex_value(std::vector<std::shared_ptr<abstract_config_node>> children);
 
-        std::vector<std::shared_ptr<token>> get_tokens() const override;
+        token_list get_tokens() const override;
 
         std::vector<std::shared_ptr<abstract_config_node>> const& children() const;
 

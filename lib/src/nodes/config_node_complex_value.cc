@@ -14,10 +14,10 @@ namespace hocon {
         return _children;
     }
 
-    vector<shared_ptr<token>> config_node_complex_value::get_tokens() const {
-        vector<shared_ptr<token>> tokens;
-        for(auto&& node : _children) {
-            for(auto&& token : node->get_tokens()) {
+    token_list config_node_complex_value::get_tokens() const {
+        token_list tokens;
+        for (auto&& node : _children) {
+            for (auto&& token : node->get_tokens()) {
                 tokens.push_back(token);
             }
         }
@@ -29,10 +29,8 @@ namespace hocon {
     {
         vector<shared_ptr<abstract_config_node>> children_copy;
         for (auto&& child : _children) {
-            shared_ptr<config_node_single_token> single_token =
-                    dynamic_pointer_cast<config_node_single_token>(child);
-            if (single_token) {
-                shared_ptr<line> new_line = dynamic_pointer_cast<line>(single_token->get_token());
+            if (auto single_token = dynamic_pointer_cast<config_node_single_token>(child)) {
+                auto new_line = dynamic_pointer_cast<const line>(single_token->get_token());
                 if (new_line) {
                     children_copy.push_back(child);
                     children_copy.push_back(indentation);
@@ -40,15 +38,12 @@ namespace hocon {
                 }
             }
 
-            shared_ptr<config_node_complex_value> complex =
-                    dynamic_pointer_cast<config_node_complex_value>(child);
-            if (complex) {
+            if (auto complex = dynamic_pointer_cast<config_node_complex_value>(child)) {
                 children_copy.push_back(complex->indent_text(indentation));
                 continue;
             }
 
-            shared_ptr<config_node_field> field = dynamic_pointer_cast<config_node_field>(child);
-            if (field) {
+            if (auto field = dynamic_pointer_cast<config_node_field>(child)) {
                 shared_ptr<abstract_config_node_value> value = field->get_value();
                 shared_ptr<config_node_complex_value> complex_node =
                         dynamic_pointer_cast<config_node_complex_value>(value);

@@ -11,8 +11,8 @@ namespace hocon {
     config_node_field::config_node_field(vector<shared_ptr<abstract_config_node>> children) :
             _children(move(children)) { }
 
-    vector<shared_ptr<token>> config_node_field::get_tokens() const {
-        vector<shared_ptr<token>> tokens;
+    token_list config_node_field::get_tokens() const {
+        token_list tokens;
         for (auto&& node : _children) {
             for (auto&& token : node->get_tokens()) {
                 tokens.push_back(token);
@@ -25,7 +25,7 @@ namespace hocon {
         vector<shared_ptr<abstract_config_node>> children_copy;
         bool replaced = false;
         for (auto&& child : _children) {
-            if(dynamic_pointer_cast<abstract_config_node_value>(child)) {
+            if (dynamic_pointer_cast<abstract_config_node_value>(child)) {
                 children_copy.push_back(new_value);
                 replaced = true;
             } else {
@@ -43,21 +43,30 @@ namespace hocon {
         for (auto&& child : _children) {
             shared_ptr<abstract_config_node_value> value =
                     dynamic_pointer_cast<abstract_config_node_value>(child);
-            if(value) {
+            if (value) {
                 return value;
             }
         }
         throw config_exception("Field node doesn't have a value.");
     }
 
-    // TODO: Implement path() once we have config_node_path
+    shared_ptr<config_node_path> config_node_field::path() const {
+        for (auto&& node : _children) {
+            shared_ptr<config_node_path> path_node =
+                    dynamic_pointer_cast<config_node_path>(node);
+            if (path_node) {
+                return path_node;
+            }
+        }
+        throw config_exception("Field node does not have a path");
+    }
 
-    shared_ptr<token> config_node_field::separator() const {
+    shared_token config_node_field::separator() const {
         for (auto&& child : _children) {
             shared_ptr<config_node_single_token> single_token =
                     dynamic_pointer_cast<config_node_single_token>(child);
             if (single_token) {
-                shared_ptr<token> t = single_token->get_token();
+                shared_token t = single_token->get_token();
                 if (t == tokens::plus_equals_token() || t == tokens::colon_token() || t == tokens::equals_token()) {
                     return t;
                 }

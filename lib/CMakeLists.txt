@@ -21,6 +21,7 @@ set(PROJECT_SOURCES
     src/nodes/config_node_comment.cc
     src/nodes/config_node_complex_value.cc
     src/nodes/config_node_field.cc
+    src/nodes/config_node_path.cc
     src/values/abstract_config_value.cc
     src/values/config_boolean.cc
     src/values/config_number.cc
@@ -29,6 +30,9 @@ set(PROJECT_SOURCES
     src/values/config_null.cc
     src/values/config_string.cc
     src/values/config_int.cc
+    src/path.cc
+    src/path_builder.cc
+    src/path_parser.cc
     src/token.cc
     src/tokens.cc
     src/tokenizer.cc

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "abstract_config_node_value.hpp"
+#include "config_node_path.hpp"
 
 
 namespace hocon {
@@ -9,14 +10,13 @@ namespace hocon {
     public:
         config_node_field(std::vector<std::shared_ptr<abstract_config_node>> children);
 
-        std::vector<std::shared_ptr<token>> get_tokens() const override;
+        token_list get_tokens() const override;
 
         std::shared_ptr<config_node_field> replace_value(std::shared_ptr<abstract_config_node_value> new_value);
         std::shared_ptr<abstract_config_node_value> get_value() const;
-        std::shared_ptr<token> separator() const;
+        shared_token separator() const;
         std::vector<std::string> comments() const;
-
-        //  TODO: implement path() once we have config_node_path
+        std::shared_ptr<config_node_path> path() const;
 
 
     private:
