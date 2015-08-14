@@ -1,3 +1,4 @@
+#include <internal/path_parser.hpp>
 #include "test_utils.hpp"
 
 using namespace std;
@@ -66,6 +67,20 @@ namespace hocon {
 
     shared_ptr<config_node_simple_value> close_brace_node() {
         return make_shared<config_node_simple_value>(tokens::close_curly_token());
+    }
+
+    shared_ptr<config_node_simple_value> space_node() {
+        return make_shared<config_node_simple_value>(unquoted_text_token(" "));
+    }
+
+    config_node_path config_node_key(string path) {
+        return path_parser::parse_path_node(path);
+    }
+
+    shared_ptr<config_node_field> node_key_value_pair(config_node_path key, shared_ptr<abstract_config_node_value> value) {
+        vector<shared_ptr<abstract_config_node>> nodes = { make_shared<config_node_path>(key),
+                                                           space_node(), colon_node(), space_node(), value };
+        return make_shared<config_node_field>(nodes);
     }
 
     /** Paths */

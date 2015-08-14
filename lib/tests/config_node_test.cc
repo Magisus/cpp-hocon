@@ -9,7 +9,8 @@
 using namespace std;
 using namespace hocon;
 
-/*  This test implementation of abstract_config_node allows
+/**
+ * This test implementation of abstract_config_node allows
  *  shallow testing of its basic methods.
  */
 class concrete_config_node : public abstract_config_node {
@@ -98,7 +99,9 @@ void top_level_value_replace_test(shared_ptr<abstract_config_node_value> value,
                                   shared_ptr<abstract_config_node_value> new_value,
                                   string key = "foo")
 {
-    vector<shared_ptr<abstract_config_node_value>> children { open_brace_node() };
+    vector<shared_ptr<abstract_config_node_value>> children { open_brace_node(),
+                node_key_value_pair(config_node_key(key), value), close_brace_node() };
+
+    // TODO: required ConfigNodeObject in order to test properly
 }
 
-// TODO: tests will require Path classes to be implemented

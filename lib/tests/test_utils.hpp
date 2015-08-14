@@ -13,6 +13,8 @@
 #include <string>
 #include <memory>
 #include <internal/path.hpp>
+#include <internal/nodes/config_node_path.hpp>
+#include <internal/nodes/config_node_field.hpp>
 
 namespace hocon {
 
@@ -48,6 +50,13 @@ namespace hocon {
     std::shared_ptr<config_node_simple_value> open_brace_node();
 
     std::shared_ptr<config_node_simple_value> close_brace_node();
+
+    std::shared_ptr<config_node_simple_value> space_node();
+
+    config_node_path config_node_key(std::string path);
+
+    std::shared_ptr<config_node_field> node_key_value_pair(config_node_path key,
+                                                           std::shared_ptr<abstract_config_node_value> value);
 
     /** Paths */
     path test_path(std::initializer_list<std::string> path_elements);
