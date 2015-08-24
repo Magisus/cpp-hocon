@@ -30,7 +30,7 @@ namespace hocon {
          *
          * @return line number or -1 if none is available
          */
-         virtual int lineNumber() const = 0;
+         virtual int line_number() const = 0;
     };
 
 }  // namespace hocon

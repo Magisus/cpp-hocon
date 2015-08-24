@@ -21,6 +21,8 @@ namespace hocon {
 
         int line_number() const override;
 
+        std::string description() const;
+
         /**
          * Returns a pointer to a copy of this origin with the specified line number
          * as both starting and ending line.
