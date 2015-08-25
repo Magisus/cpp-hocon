@@ -20,23 +20,23 @@ namespace hocon {
      * implementations will break.
      */
     class config_parseable {
-
+    public:
         /**
          * Parse whatever it is. The options should come from
-         * {@link ConfigParseable#options options()} but you could tweak them if you
+         * {@link config_parseable#options()} but you could tweak them if you
          * like.
          *
          * @param options
          *            parse options, should be based on the ones from
-         *            {@link ConfigParseable#options options()}
+         *            {@link config_parseable#options()}
          * @return the parsed object
          */
-        std::shared_ptr<config_object> parse(shared_parse_options options);
+        virtual std::shared_ptr<config_object> parse(shared_parse_options options) = 0;
 
         /**
          * Returns a config_origin describing the origin of the paresable item.
          */
-        std::shared_ptr<config_origin> origin();
+        virtual std::shared_ptr<const config_origin> origin() = 0;
 
         /**
          * Get the initial options, which can be modified then passed to parse().
@@ -44,7 +44,7 @@ namespace hocon {
          * parameters already set up.
          * @return the initial options
          */
-        shared_parse_options options();
+        virtual shared_parse_options options() = 0;
     };
 
 }  // namespace hocon

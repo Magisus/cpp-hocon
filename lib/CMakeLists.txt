@@ -48,6 +48,8 @@ set(PROJECT_SOURCES
     src/config_document_parser.cc
     src/config_document_factory.cc
     src/parseable.cc
+    src/simple_include_context.cc
+    src/simple_includer.cc
 )
 
 ## An object target is generated that can be used by both the library and test executable targets.
