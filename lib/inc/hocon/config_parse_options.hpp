@@ -131,5 +131,5 @@ namespace hocon {
         std::shared_ptr<config_includer> _includer;
     };
 
-    using shared_parse_options = std::shared_ptr<config_parse_options>;
+    using shared_parse_options = std::shared_ptr<const config_parse_options>;
 }  // namespace hocon

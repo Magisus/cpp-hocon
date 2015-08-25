@@ -24,7 +24,6 @@ namespace hocon {
 
         shared_parse_options options() override;
         std::shared_ptr<const config_origin> origin() override;
-        std::shared_ptr<config_object> parse(shared_parse_options options) override;
 
         virtual std::unique_ptr<std::istream> reader(shared_parse_options options);
         virtual std::unique_ptr<std::istream> reader() = 0;
@@ -33,9 +32,6 @@ namespace hocon {
 
         virtual config_syntax content_type() const;
         virtual std::shared_ptr<config_parseable> relative_to(std::string file_name);
-
-        virtual std::shared_ptr<abstract_config_object> raw_parse_value(shared_origin origin,
-                                                                        shared_parse_options options);
 
     private:
         std::shared_ptr<config_document> parse_document(shared_parse_options base_options);
@@ -46,6 +42,8 @@ namespace hocon {
                                                             shared_parse_options options);
 
         shared_parse_options fixup_options(shared_parse_options base_options);
+
+        std::vector<parseable> _parse_stack;
 
         shared_origin _initial_origin;
         shared_parse_options _initial_options;
@@ -83,15 +81,6 @@ namespace hocon {
     class parseable_resources : public parseable {
     public:
         parseable_resources(std::string resource, shared_parse_options options);
-
-        /**
-         * This is where the upstream code would go out and look for a file on the
-         * classpath.  We're not going to do that, and instead we're just going to
-         * raise the same exception that the upstream code would raise if it failed
-         * to find the file.
-         */
-        std::shared_ptr<abstract_config_object> raw_parse_value(shared_origin origin,
-                                                                shared_parse_options options) override;
 
         std::unique_ptr<std::istream> reader() override;
         shared_origin create_origin() override;

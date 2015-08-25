@@ -24,9 +24,9 @@ namespace hocon {
     void parseable::post_construct(shared_parse_options base_options) {
         _initial_options = fixup_options(base_options);
 
-        _include_context = make_shared<simple_include_context>(shared_from_this());
+        // TODO: add include context stuff
 
-        if (!_initial_options->get_origin_description()->empty()) {
+        if (_initial_options->get_origin_description()) {
             _initial_origin = make_shared<simple_config_origin>(*_initial_options->get_origin_description());
         } else {
             _initial_origin = create_origin();
@@ -101,7 +101,7 @@ namespace hocon {
 
         // passed in options can override origin
         shared_origin origin = _initial_origin;
-        if (!options->get_origin_description()->empty()) {
+        if (options->get_origin_description()) {
             origin = make_shared<simple_config_origin>(*options->get_origin_description());
         }
         return parse_document(origin, move(options));
@@ -145,6 +145,42 @@ namespace hocon {
         auto tokens = token_iterator(origin, move(stream), options->get_syntax());
         return make_shared<simple_config_document>(config_document_parser::parse(move(tokens), origin, *options), options);
     }
+
+
+
+    // TODO: These rely on the ConfigParser, another huge convoluted class to port that has its own ticket
+//    const int MAX_INCLUDE_DEPTH = 50;
+//    std::shared_ptr<config_object> parseable::parse(shared_parse_options base_options) {
+//        if (_parse_stack.size() >= MAX_INCLUDE_DEPTH) {
+//            throw config_exception("include statements nested more than " + std::to_string(MAX_INCLUDE_DEPTH) +
+//                                           " times, you probably have a cycle in your includes.");
+//        }
+//
+//        _parse_stack.push_back(*this);
+//
+//    }
+//
+//    shared_value parseable::raw_parse_value(shared_origin origin, shared_parse_options options) {
+//        auto stream = reader(options);
+//
+//        // after reader() we will have loaded the content type
+//        config_syntax cont_type = content_type();
+//        shared_parse_options options_with_content_type;
+//        if (cont_type != config_syntax::UNSPECIFIED) {
+//            options_with_content_type = make_shared<config_parse_options>(options->set_syntax(cont_type));
+//        } else {
+//            options_with_content_type = options;
+//        }
+//
+//        return raw_parse_value(move(stream), origin, options_with_content_type);
+//    }
+//
+//    shared_value parseable::raw_parse_value(unique_ptr<istream> stream, shared_origin origin,
+//                                            shared_parse_options options) {
+//        token_iterator tokens(origin, move(stream), options->get_syntax());
+//        auto document = config_document_parser::parse(tokens, origin, *options);
+//        return config_parser.parse(document, origin, options, include_context());
+//    }
 
     unique_ptr<istream> parseable::reader(shared_parse_options options) {
         return reader();

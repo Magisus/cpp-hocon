@@ -31,7 +31,8 @@ namespace hocon {
          *            {@link config_parseable#options()}
          * @return the parsed object
          */
-        virtual std::shared_ptr<config_object> parse(shared_parse_options options) = 0;
+        // TODO: This relies on the ConfigParser, which has a separate ticket
+        // virtual std::shared_ptr<config_object> parse(shared_parse_options options) = 0;
 
         /**
          * Returns a config_origin describing the origin of the paresable item.
