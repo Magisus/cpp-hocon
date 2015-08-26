@@ -50,6 +50,7 @@ set(PROJECT_SOURCES
     src/parseable.cc
     src/simple_include_context.cc
     src/simple_includer.cc
+    src/config_resolve_options.cc
 )
 
 ## An object target is generated that can be used by both the library and test executable targets.
