@@ -46,6 +46,7 @@ set(PROJECT_SOURCES
     src/config_parse_options.cc
     src/config_render_options.cc
     src/config_document_parser.cc
+    src/config_resolve_options.cc
 )
 
 ## An object target is generated that can be used by both the library and test executable targets.

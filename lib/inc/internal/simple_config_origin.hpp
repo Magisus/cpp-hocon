@@ -1,5 +1,7 @@
 #pragma once
 
+#include <hocon/config_origin.hpp>
+
 #include <string>
 #include <vector>
 #include <memory>
@@ -8,7 +10,7 @@ namespace hocon {
 
     enum class origin_type { GENERIC, FILE, RESOURCE };
 
-    class simple_config_origin {
+    class simple_config_origin : public config_origin {
     public:
         simple_config_origin(std::string description, int line_number, int end_line_number,
             origin_type org_type, std::string resource_or_null, std::vector<std::string> comments_or_null);
@@ -19,11 +21,13 @@ namespace hocon {
 
         int line_number() const;
 
+        std::string description() const override;
+
         /**
          * Returns a pointer to a copy of this origin with the specified line number
          * as both starting and ending line.
          */
-        std::shared_ptr<const simple_config_origin> with_line_number(int line_number) const;
+        shared_origin with_line_number(int line_number) const override;
 
         bool operator==(const simple_config_origin &other) const;
         bool operator!=(const simple_config_origin &other) const;
@@ -36,7 +40,5 @@ namespace hocon {
         std::string _resource_or_null;
         std::vector<std::string> _comments_or_null;
     };
-
-    using shared_origin = std::shared_ptr<const simple_config_origin>;
 
 }  // namespace hocon
