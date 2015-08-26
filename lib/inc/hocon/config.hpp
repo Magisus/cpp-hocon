@@ -2,10 +2,17 @@
 
 #include "config_mergeable.hpp"
 #include "config_origin.hpp"
+#include "config_object.hpp"
+#include "config_resolve_options.hpp"
+#include "config_value.hpp"
 #include <vector>
 #include <string>
+#include <set>
 
 namespace hocon {
+
+    class config;
+    using shared_config = std::shared_ptr<const config>;
     /**
      * An immutable map from config paths to config values. Paths are dot-separated
      * expressions such as <code>foo.bar.baz</code>. Values are as in JSON
@@ -165,7 +172,7 @@ namespace hocon {
          *
          * @return the root object in the configuration
          */
-        virtual shared_origin root() const = 0;
+        virtual std::shared_ptr<const config_object> root() const = 0;
 
         /**
          * Gets the origin of the {@code Config}, which may be a file, or a file
@@ -457,7 +464,7 @@ namespace hocon {
          *         entire tree of {@link config_object} and creating an entry for
          *         each leaf value.
          */
-        virtual std::set<pair<std::string, shared_value>> entry_set() const = 0;
+        virtual std::set<std::pair<std::string, std::shared_ptr<const config_value>>> entry_set() const = 0;
 
         /**
          * Checks whether a value is set to null at the given path,
@@ -482,8 +489,25 @@ namespace hocon {
          */
         virtual bool get_is_null(std::string path) const = 0;
 
-        template<typename T>
-        virtual T get<T>(std::string path) const = 0;
+        virtual bool get_bool(std::string path) const = 0;
+        virtual int get_int(std::string path) const = 0;
+        virtual int get_long(std::string path) const = 0;
+        virtual double get_double(std::string path) const = 0;
+        virtual std::string get_string(std::string path) const = 0;
+        virtual std::shared_ptr<const config_object> get_object(std::string path) const = 0;
+        virtual shared_config get_config(std::string path) const = 0;
+        virtual std::shared_ptr<const config_value> get_value(std::string path) const = 0;
+        virtual std::vector<bool> get_bool_list(std::string path) const = 0;
+        virtual std::vector<int> get_int_list(std::string path) const = 0;
+        virtual std::vector<int64_t> get_long_list(std::string path) const = 0;
+        virtual std::vector<double> get_double_list(std::string path) const = 0;
+        virtual std::vector<std::string> get_string_list(std::string path) const = 0;
+        virtual std::vector<std::shared_ptr<const config_object>> get_object_list(std::string path) const = 0;
+        virtual std::vector<shared_config> get_config_list(std::string path) const = 0;
+
+
+        // TODO: memory and duration parsing
+        // TODO: complex config objects
 
         /**
          * Clone the config with only the given path (and its children) retained;
@@ -550,9 +574,7 @@ namespace hocon {
          *            value at the new path
          * @return the new instance with the new map entry
          */
-        virtual shared_config with_value(std::string path, shared_value value) const = 0;
+        virtual shared_config with_value(std::string path, std::shared_ptr<const config_value> value) const = 0;
     };
-
-using shared_config = std::shared_ptr<const config>;
 
 }  // namespace hocon

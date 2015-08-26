@@ -4,6 +4,6 @@
 
 namespace hocon {
 
-    class config_object : public config_value { };
+    class config_object { };
 
 }  // namespace hocon

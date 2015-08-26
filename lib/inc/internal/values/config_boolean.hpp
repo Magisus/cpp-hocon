@@ -11,6 +11,8 @@ namespace hocon {
         config_value_type value_type() const override;
         std::string transform_to_string() const override;
 
+        bool bool_value() const;
+
     private:
         bool _value;
     };

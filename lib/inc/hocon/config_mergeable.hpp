@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 namespace hocon {
 
     class config_mergeable {

@@ -16,7 +16,7 @@ namespace hocon {
             _value(move(value)) { }
 
     std::string value::to_string() const {
-        return _value->transform_to_string();
+        return _value->render();
     }
 
     shared_origin const& value::origin() const {

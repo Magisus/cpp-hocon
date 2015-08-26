@@ -1,7 +1,8 @@
 #pragma once
 
-#include <string>
+#include "config_origin.hpp"
 #include "config_render_options.hpp"
+#include <string>
 
 namespace hocon {
     /**
@@ -9,7 +10,7 @@ namespace hocon {
      * href="http://json.org">JSON</a> type schema).
      */
     enum class config_value_type {
-        OBJECT, LIST, NUMBER, BOOLEAN, CONFIG_NULL, STRING
+        OBJECT, LIST, NUMBER, BOOLEAN, CONFIG_NULL, STRING, UNSPECIFIED
     };
 
     /**
@@ -29,6 +30,14 @@ namespace hocon {
      */
     class config_value {
     public:
+        /**
+         * The origin of the value (file, line number, etc.), for debugging and
+         * error messages.
+         *
+         * @return where the value came from
+         */
+        virtual shared_origin const& origin() const = 0;
+
         /**
          * The config_value_type of the value; matches the JSON type schema.
          *
@@ -76,4 +85,5 @@ namespace hocon {
          */
         virtual std::string render(config_render_options options) const = 0;
     };
+
 }  // namespace hocon

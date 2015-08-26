@@ -20,7 +20,7 @@ namespace hocon {
                     config_render_options options) const;
         virtual void render(std::string& result, int indent, bool at_root, config_render_options options) const;
 
-        shared_origin const& origin() const;
+        shared_origin const& origin() const override;
 
     private:
         shared_origin _origin;

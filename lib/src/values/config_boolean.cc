@@ -15,4 +15,8 @@ namespace hocon {
         return _value ? "true" : "false";
     }
 
+    bool config_boolean::bool_value() const {
+        return _value;
+    }
+
 }  // namespace hocon
