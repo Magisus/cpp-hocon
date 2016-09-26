@@ -1,5 +1,5 @@
 environment:
-  LEATHERMAN_VERSION: 0.9.0
+  LEATHERMAN_VERSION: 0.9.1
 install:
   - git submodule update --init --recursive
 
